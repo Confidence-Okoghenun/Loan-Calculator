@@ -11,6 +11,7 @@ let
   totalInterest = document.querySelector('#total-interest');
 
 calcBtn.addEventListener('click', (e) => {
+  document.querySelector('#results').style.display = 'none';
   e.preventDefault();
   if(amount.value&&interest.value&&years.value) {
     let principal = parseFloat(amount.value),
@@ -22,14 +23,24 @@ calcBtn.addEventListener('click', (e) => {
     monthly = (principal * x * calculatedInterest)/(x - 1);
 
     if(isFinite(monthly)) {
-      monthlyPayment.value = monthly.toFixed(2);
-      totalPayment.value = (monthly * calculatedPayments).toFixed(2);
-      totalInterest.value = ((monthly * calculatedPayments) - principal).toFixed(2);
+      loadingGif.style.display = 'block';
+      setTimeout(() => {
+        loadingGif.style.display = 'none';
+
+        monthlyPayment.value = monthly.toFixed(2);
+        totalPayment.value = (monthly * calculatedPayments).toFixed(2);
+        totalInterest.value = ((monthly * calculatedPayments) - principal).toFixed(2);
+        document.querySelector('#results').style.display = 'block';
+      }, 2000)
     } else {
       showError('Please enter finite values');
     }
   } else {
-    showError('Please check your numbers');
+    loadingGif.style.display = 'block';
+    setTimeout(() => {
+      loadingGif.style.display = 'none';
+      showError('Please check your numbers');
+    }, 2000)
   }
   
 })
